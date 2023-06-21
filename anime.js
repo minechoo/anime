@@ -28,31 +28,25 @@ btn.addEventListener('click', () => {
 });
 
 function anime(selector, option) {
-	startTime = performance.now();
+	const startTime = performance.now();
 	console.log('시작시간', startTime);
-	requestAnimationFrame(move);
 
-	function move(time) {
-		//timelast : 각 사이클 마다 걸리는 누적시간
+	//현재 css에 적용되어있는 값을 가져온뒤, parseInt 를 활용해 숫자값으로 변경
+	const currentValue = parseInt(getComputedStyle(selector)[option.prop]);
+
+	if (option.value !== currentValue) requestAnimationFrame(run);
+
+	function run(time) {
 		let timelast = time - startTime;
 		let progress = timelast / option.duration;
 
-		//progress값이 시작이 음수로 떨어지거나 혹은 종료시 1이 넘어서는 경우를 각각 0, 1로 보정
-		//progress값이 적용되는 targetValue값도 딱 정수로 떨어짐 (px단위에서 중요함)
 		progress < 0 && (progress = 0);
 		progress > 1 && (progress = 1);
-		// progress < 1 && {
-		// 	requestAnimationFrame(move);
-		// }else{
-		// 	option.callback()
-		// }
-		progress < 1 ? requestAnimationFrame(move) : option.callback && option.callback();
+		progress < 1 ? requestAnimationFrame(run) : option.callback && option.callback();
 		console.log('누적시간', timelast);
 		console.log('진행률', progress);
-		// console.log('반복횟수', count++);
 
-		//고정되어 있는 반복횟수안에서 제어할 수 있는건 각 반복 사이클마다의 변화량이기때문에
-		//변경하려고 하는 targetValue 값에 진행율을 곱해서 변화량을 제어
-		selector.style[option.prop] = option.value * progress + 'px';
+		let result = currentValue + (option.value - currentValue) * progress;
+		selector.style[option.prop] = result + 'px';
 	}
 }
