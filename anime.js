@@ -8,7 +8,6 @@
   반복횟수 X : 고정된 반복횟수안에서 변화량을 제어 O
 */
 
-//1초동안 500px 이동
 const btn = document.querySelector('button');
 const box = document.querySelector('#box');
 
@@ -19,6 +18,11 @@ btn.addEventListener('click', () => {
 		duration: 1000,
 		callback: () => {
 			console.log('end');
+			anime(box, {
+				prop: 'margin-top',
+				value: 500,
+				duration: 1000,
+			});
 		},
 	});
 });
@@ -37,7 +41,12 @@ function anime(selector, option) {
 		//progress값이 적용되는 targetValue값도 딱 정수로 떨어짐 (px단위에서 중요함)
 		progress < 0 && (progress = 0);
 		progress > 1 && (progress = 1);
-		progress < 1 && requestAnimationFrame(move);
+		// progress < 1 && {
+		// 	requestAnimationFrame(move);
+		// }else{
+		// 	option.callback()
+		// }
+		progress < 1 ? requestAnimationFrame(move) : option.callback && option.callback();
 		console.log('누적시간', timelast);
 		console.log('진행률', progress);
 		// console.log('반복횟수', count++);
