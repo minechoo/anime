@@ -3,9 +3,23 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+body {
+	height: 5000px;
+}
+.wrap {
+	position: relative;
+	width: 1000px;
+	height: 500px;
+	border: 1px solid red;
+}
 #box {
+	position: absolute;
+	top: 10px;
+	left: 10px;
 	width: 100px;
 	height: 100px;
 	background: aqua;
-	margin-left: 200px;
+	/* margin-left: 100px;
+	margin-top: 20px; */
+	opacity: 1;
 }
